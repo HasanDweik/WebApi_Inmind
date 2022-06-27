@@ -19,6 +19,7 @@ public class Student
 
     public string name { get; set; }
     [Required]
+    [EmailAddress]
     public string email { get; set; }
 
 }

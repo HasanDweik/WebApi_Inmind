@@ -7,8 +7,12 @@ namespace WebApi0.Controllers;
 [Route("[controller]")]
 public class StudentController : Controller
 {
-    private List<Student> students = new List<Student>{new Student(1,"Hasan","hasan7@live.com"),
-        new Student(2,"George","george3@live.com")};
+    private List<Student> students = new List<Student>{
+        new Student(1,"Hasan","hasan7@live.com"),
+        new Student(2,"George","george3@live.com"),
+        new Student(3,"Maroun","maroun5@live.com"),
+        
+    };
     
     private readonly ILogger<StudentController> _logger;
 
@@ -17,24 +21,33 @@ public class StudentController : Controller
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetStudent")]
+    [HttpGet("GetStudents")]
     public IEnumerable<Student> Get()
     {
         return students
             .ToArray();
     }
-    [HttpPost(Name = "PostStudent")]
+    
+
+    [HttpPost("PostStudent")]
     public IEnumerable<Student> AddStudent(Student student)
     {
         students.Add(student);
         return Get();
     }
-    [HttpDelete(Name = "DeleteStudent")]
+    [HttpDelete("DeleteStudent")]
     public IEnumerable<Student> DeleteStudent(int id)
     {
         Student student = students.Where(obj => obj.id == id).Select(x => x).First();
         students.Remove(student);
         return Get();
+    }
+    
+    [HttpGet("GetStudent")]
+    public Student GetStudent(int id)
+    {
+        Student student = students.Where(obj => obj.id == id).Select(x => x).First();
+        return student;
     }
     
 }
