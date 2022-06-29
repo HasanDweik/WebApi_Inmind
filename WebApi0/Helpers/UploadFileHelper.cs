@@ -17,16 +17,25 @@ public class UploadFileHelper:IUploadFileHelper
     
     public Boolean UploadImage(UploadImage uploadImage)
     {
-        string path = Path.Combine(Environment.WebRootPath, "Uploads");
-        if (!Directory.Exists(path))
+        try
         {
-            Directory.CreateDirectory(path);
-        }
-        string fileName = Path.GetFileName(uploadImage._formFile.FileName);
-        FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
-        uploadImage._formFile.CopyTo(stream);
+            string path = Path.Combine(Environment.WebRootPath, "Uploads");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string fileName = Path.GetFileName(uploadImage._formFile.FileName);
+            FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
+            uploadImage._formFile.CopyTo(stream);
         
-        stream.Close();
-        return true;
+            stream.Close();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+  
     }
 }

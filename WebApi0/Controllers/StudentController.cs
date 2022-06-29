@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using WebApi0.DTOs;
 using WebApi0.Interfaces;
 using WebApi0.Models;
@@ -31,22 +32,22 @@ public class StudentController : Controller
         return _studentHelper.GetAllStudents(students);
     }
     [HttpGet("GetStudent")]
-    public Student GetStudentById(int id)
+    public Student GetStudentById([Required]int id)
     {
         return _studentHelper.GetStudentById(students, id);
     }
     [HttpPost("PostStudent")]
-    public IEnumerable<Student> AddStudent(Student student)
+    public IEnumerable<Student> AddStudent([Required]Student student)
     {
         return _studentHelper.AddStudent(students,student);
     }
     [HttpDelete("DeleteStudent")]
-    public IEnumerable<Student> DeleteStudent(int id)
+    public IEnumerable<Student> DeleteStudent([Required]int id)
     {
         return _studentHelper.DeleteStudent(students,id);
     }
     [HttpPost("UpdateStudent")]
-    public IEnumerable<Student> UpdateStudent(int id,UpdateStudentDto usDto)
+    public IEnumerable<Student> UpdateStudent([Required]int id,UpdateStudentDto usDto)
     {
         return _studentHelper.UpdateStudent(students, id, usDto);
     }

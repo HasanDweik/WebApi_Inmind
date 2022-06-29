@@ -1,4 +1,5 @@
 ﻿using WebApi0.DTOs;
+using WebApi0.Exceptions;
 using WebApi0.Interfaces;
 using WebApi0.Models;
 
@@ -13,7 +14,27 @@ public class StudentHelpers : IStudentHelper
 
     public Student GetStudentById(List<Student> students, int id)
     {
-        return students.Where(obj => obj.Id == id).Select(x => x).First();
+        try
+        {
+            Student student = students.Where(obj => obj.Id == id).Select(x => x).First();
+            if (student != null)
+            {
+                return student;
+            }
+            else
+            {
+                throw new StudentNotFoundException();
+            }
+        }
+        catch (StudentNotFoundException e)
+        {
+            Console.WriteLine("student not found");
+        }
+        catch (Exception d)
+        {
+            Console.WriteLine(d.Message);
+        }
+        return null;
     }
 
     public IEnumerable<Student> AddStudent(List<Student> students,Student student)
@@ -23,20 +44,46 @@ public class StudentHelpers : IStudentHelper
     }
     public IEnumerable<Student> DeleteStudent(List<Student> students, int id)
     {
-        students.Remove(students.Where(obj => obj.Id == id).First());
-        return students;
+        try
+        {
+            students.Remove(students.Where(obj => obj.Id == id).First());
+            return students;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
     public IEnumerable<Student> UpdateStudent(List<Student> students, int id, UpdateStudentDto usDto)
     {
-        Student student = students.Where(obj => obj.Id == id).First();
-        int index = students.IndexOf(student);
-        students[index].Email = usDto.Email;
-        students[index].Name = usDto.Name;
-        return students.ToArray();
+        try
+        {
+            Student student = students.Where(obj => obj.Id == id).First();
+            int index = students.IndexOf(student);
+            students[index].Email = usDto.Email;
+            students[index].Name = usDto.Name;
+            return students.ToArray();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 
     public List<Student> GetStudentByString(List<Student> students, string s)
     {
-        return students.Where(obj => obj.Name.Contains(s)).ToList();
+        try
+        {
+            return students.Where(obj => obj.Name.Contains(s)).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
