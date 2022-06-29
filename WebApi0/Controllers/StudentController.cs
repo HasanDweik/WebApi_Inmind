@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApi0.DTOs;
+using WebApi0.Interfaces;
 using WebApi0.Models;
 
 namespace WebApi0.Controllers;
@@ -15,39 +17,43 @@ public class StudentController : Controller
     };
     
     private readonly ILogger<StudentController> _logger;
+    private readonly IStudentHelper _studentHelper;
 
-    public StudentController(ILogger<StudentController> logger)
+    public StudentController(ILogger<StudentController> logger, IStudentHelper studentHelper)
     {
         _logger = logger;
+        _studentHelper = studentHelper;
     }
 
     [HttpGet("GetStudents")]
-    public IEnumerable<Student> Get()
+    public IEnumerable<Student> GetAllStudents()
     {
-        return students
-            .ToArray();
+        return _studentHelper.GetAllStudents(students);
     }
-    
-
+    [HttpGet("GetStudent")]
+    public Student GetStudentById(int id)
+    {
+        return _studentHelper.GetStudentById(students, id);
+    }
     [HttpPost("PostStudent")]
     public IEnumerable<Student> AddStudent(Student student)
     {
-        students.Add(student);
-        return Get();
+        return _studentHelper.AddStudent(students,student);
     }
     [HttpDelete("DeleteStudent")]
     public IEnumerable<Student> DeleteStudent(int id)
     {
-        Student student = students.Where(obj => obj.id == id).Select(x => x).First();
-        students.Remove(student);
-        return Get();
+        return _studentHelper.DeleteStudent(students,id);
     }
-    
-    [HttpGet("GetStudent")]
-    public Student GetStudent(int id)
+    [HttpPost("UpdateStudent")]
+    public IEnumerable<Student> UpdateStudent(int id,UpdateStudentDto usDto)
     {
-        Student student = students.Where(obj => obj.id == id).Select(x => x).First();
-        return student;
+        return _studentHelper.UpdateStudent(students, id, usDto);
     }
-    
+    [HttpGet("GetStudentByString")]
+    public List<Student> GetStudentByString(string s)
+    {
+        return _studentHelper.GetStudentByString(students,s);
+    }
+
 }

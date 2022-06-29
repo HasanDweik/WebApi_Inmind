@@ -7,19 +7,19 @@ public class Student
     
     public Student(int id, string name, string email)
     {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+        this.Id = id;
+        this.Name = name;
+        this.Email = email;
     }
     [Required]
-    public int id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MinLength(3,ErrorMessage = "please enter a valid name")]
 
-    public string name { get; set; }
+    public string Name { get; set; }
     [Required]
     [EmailAddress]
-    public string email { get; set; }
+    public string Email { get; set; }
 
 }
